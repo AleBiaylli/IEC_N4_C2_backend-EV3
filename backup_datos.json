@@ -4,14 +4,14 @@
   "pk": 1,
   "fields": {
     "nombre": "Maquinaria Ligera",
-    "descripcion": "Equipos compactos para movimiento de tierra, compactaci髇 y hormigonado"
+    "descripcion": "Equipos compactos para movimiento de tierra, compactaci贸n y hormigonado"
   }
 },
 {
   "model": "api.categoriaherramienta",
   "pk": 2,
   "fields": {
-    "nombre": "Corte y Demolici髇",
+    "nombre": "Corte y Demolici贸n",
     "descripcion": "Sierras circulares, cortadoras de pavimento, rotomartillos y demoledores"
   }
 },
@@ -19,7 +19,7 @@
   "model": "api.categoriaherramienta",
   "pk": 3,
   "fields": {
-    "nombre": "Herramientas El閏tricas",
+    "nombre": "Herramientas El茅ctricas",
     "descripcion": "Taladros, esmeriles angulares, lijadoras y pulidoras industriales"
   }
 },
@@ -27,23 +27,23 @@
   "model": "api.categoriaherramienta",
   "pk": 4,
   "fields": {
-    "nombre": "Generaci髇 y Iluminaci髇",
-    "descripcion": "Generadores di閟el/gasolina y torres de iluminaci髇 para faena"
+    "nombre": "Generaci贸n y Iluminaci贸n",
+    "descripcion": "Generadores di茅sel/gasolina y torres de iluminaci贸n para faena"
   }
 },
 {
   "model": "api.categoriaherramienta",
   "pk": 5,
   "fields": {
-    "nombre": "Elevaci髇 y Carga",
-    "descripcion": "Elevadores de pluma, tecles el閏tricos y transpaletas"
+    "nombre": "Elevaci贸n y Carga",
+    "descripcion": "Elevadores de pluma, tecles el茅ctricos y transpaletas"
   }
 },
 {
   "model": "api.categoriaherramienta",
   "pk": 6,
   "fields": {
-    "nombre": "Seguridad y Ventilaci髇",
+    "nombre": "Seguridad y Ventilaci贸n",
     "descripcion": "Extractores de aire de faena, ventiladores axiales y detectores de gas"
   }
 },
@@ -59,7 +59,7 @@
   "model": "api.categoriaherramienta",
   "pk": 9,
   "fields": {
-    "nombre": "Herramientas El閏tricas B醩icas",
+    "nombre": "Herramientas El茅ctricas B谩sicas",
     "descripcion": "Taladros, esmeriles angulares, lijadoras y atornilladores"
   }
 },
@@ -67,8 +67,8 @@
   "model": "api.categoriaherramienta",
   "pk": 10,
   "fields": {
-    "nombre": "Generaci髇 y Limpieza",
-    "descripcion": "Generadores el閏tricos, compresores de aire, hidrolavadoras y torres"
+    "nombre": "Generaci贸n y Limpieza",
+    "descripcion": "Generadores el茅ctricos, compresores de aire, hidrolavadoras y torres"
   }
 },
 {
@@ -160,7 +160,7 @@
   "pk": 8,
   "fields": {
     "codigo_activo": "HERR-008",
-    "nombre": "Vibrador de Inmersi髇 para Hormig髇",
+    "nombre": "Vibrador de Inmersi贸n para Hormig贸n",
     "categoria": 7,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 25,
@@ -208,7 +208,7 @@
   "pk": 12,
   "fields": {
     "codigo_activo": "HERR-012",
-    "nombre": "Atornillador Inal醡brico 20V Max",
+    "nombre": "Atornillador Inal谩mbrico 20V Max",
     "categoria": 9,
     "estado": "EN_USO",
     "horas_uso_acumuladas": 40,
@@ -220,7 +220,7 @@
   "pk": 13,
   "fields": {
     "codigo_activo": "HERR-013",
-    "nombre": "Generador Monof醩ico 5.5 KVA Gasolina",
+    "nombre": "Generador Monof谩sico 5.5 KVA Gasolina",
     "categoria": 10,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 150,
@@ -232,7 +232,7 @@
   "pk": 14,
   "fields": {
     "codigo_activo": "HERR-014",
-    "nombre": "Generador Trif醩ico 10 KVA Di閟el",
+    "nombre": "Generador Trif谩sico 10 KVA Di茅sel",
     "categoria": 10,
     "estado": "EN_USO",
     "horas_uso_acumuladas": 210,
@@ -256,7 +256,7 @@
   "pk": 16,
   "fields": {
     "codigo_activo": "HERR-016",
-    "nombre": "Tecle El閏trico de Cadena 1 Tonelada",
+    "nombre": "Tecle El茅ctrico de Cadena 1 Tonelada",
     "categoria": 5,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 50,
@@ -268,7 +268,7 @@
   "pk": 17,
   "fields": {
     "codigo_activo": "HERR-017",
-    "nombre": "Transpaleta Hidr醬lica 2.5 Toneladas",
+    "nombre": "Transpaleta Hidr谩ulica 2.5 Toneladas",
     "categoria": 5,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 75,
@@ -388,7 +388,7 @@
   "pk": 27,
   "fields": {
     "codigo_activo": "HERR-008-B",
-    "nombre": "Vibrador de Inmersi髇 para Hormig髇",
+    "nombre": "Vibrador de Inmersi贸n para Hormig贸n",
     "categoria": 7,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 6,
@@ -412,7 +412,7 @@
   "pk": 29,
   "fields": {
     "codigo_activo": "HERR-018",
-    "nombre": "Alisadora de Hormig髇 / Helic髉tero 9 HP",
+    "nombre": "Alisadora de Hormig贸n / Helic贸ptero 9 HP",
     "categoria": 7,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 15,
@@ -424,7 +424,7 @@
   "pk": 30,
   "fields": {
     "codigo_activo": "HERR-018-B",
-    "nombre": "Alisadora de Hormig髇 / Helic髉tero 9 HP",
+    "nombre": "Alisadora de Hormig贸n / Helic贸ptero 9 HP",
     "categoria": 1,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 3,
@@ -448,7 +448,7 @@
   "pk": 32,
   "fields": {
     "codigo_activo": "HERR-012-B",
-    "nombre": "Atornillador Inal醡brico 20V Max",
+    "nombre": "Atornillador Inal谩mbrico 20V Max",
     "categoria": 9,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 10,
@@ -460,7 +460,7 @@
   "pk": 33,
   "fields": {
     "codigo_activo": "HERR-013-B",
-    "nombre": "Generador Monof醩ico 5.5 KVA Gasolina",
+    "nombre": "Generador Monof谩sico 5.5 KVA Gasolina",
     "categoria": 10,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 60,
@@ -472,7 +472,7 @@
   "pk": 34,
   "fields": {
     "codigo_activo": "HERR-014-B",
-    "nombre": "Generador Trif醩ico 10 KVA Di閟el",
+    "nombre": "Generador Trif谩sico 10 KVA Di茅sel",
     "categoria": 4,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 45,
@@ -496,7 +496,7 @@
   "pk": 36,
   "fields": {
     "codigo_activo": "HERR-016-B",
-    "nombre": "Tecle El閏trico de Cadena 1 Tonelada",
+    "nombre": "Tecle El茅ctrico de Cadena 1 Tonelada",
     "categoria": 5,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 22,
@@ -508,7 +508,7 @@
   "pk": 37,
   "fields": {
     "codigo_activo": "HERR-017-B",
-    "nombre": "Transpaleta Hidr醬lica 2.5 Toneladas",
+    "nombre": "Transpaleta Hidr谩ulica 2.5 Toneladas",
     "categoria": 5,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 30,
@@ -520,7 +520,7 @@
   "pk": 38,
   "fields": {
     "codigo_activo": "HERR-019",
-    "nombre": "Extractor de Aire Port醫il 12 Pulgadas",
+    "nombre": "Extractor de Aire Port谩til 12 Pulgadas",
     "categoria": 6,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 12,
@@ -532,7 +532,7 @@
   "pk": 39,
   "fields": {
     "codigo_activo": "HERR-019-B",
-    "nombre": "Extractor de Aire Port醫il 12 Pulgadas",
+    "nombre": "Extractor de Aire Port谩til 12 Pulgadas",
     "categoria": 6,
     "estado": "DISPONIBLE",
     "horas_uso_acumuladas": 8,
@@ -570,7 +570,7 @@
     "herramienta": 4,
     "fecha_ingreso": "2026-10-30T05:08:30.322Z",
     "tipo": "CORRECTIVO",
-    "detalle": "Cambio de disco de corte e inspecci髇 de carbones de motor.",
+    "detalle": "Cambio de disco de corte e inspecci贸n de carbones de motor.",
     "proximo_mantenimiento": "2026-11-13"
   }
 },
@@ -581,7 +581,7 @@
     "herramienta": 15,
     "fecha_ingreso": "2026-10-30T05:08:30.322Z",
     "tipo": "PREVENTIVO",
-    "detalle": "Revisi髇 general de cableado el閏trico y sustituci髇 de foco LED da馻do.",
+    "detalle": "Revisi贸n general de cableado el茅ctrico y sustituci贸n de foco LED da帽ado.",
     "proximo_mantenimiento": "2026-11-28"
   }
 }
