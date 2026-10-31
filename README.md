@@ -1,4 +1,4 @@
-# BuildCorp - Sistema de Gestión de Arriendo y Mantenimiento de Equipos de Obra
+# BuildCorp - Sistema de Alquiler y Control de Herramientas (BuildCorp)
 
 Sistema backend completo desarrollado en **Django 4.x** y **Django REST Framework (DRF)** para la gestión de flota de herramientas, arriendos para contratistas y control de mantenimientos preventivos y correctivos en obras de construcción.
 
