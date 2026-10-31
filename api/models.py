@@ -9,11 +9,14 @@ Estructura de Base de Datos Relacional en Tercera Forma Normal (3NF):
 5. Alquiler: Contratos de arrendamiento activos, histórico, responsable y firma digital.
 6. Mantenimiento: Registro de intervenciones técnicas preventivas y correctivas.
 7. CarroItem: Carrito de solicitudes de alquiler persistente por usuario.
+8. Signal: Automatización de cambio de estado a MANTENIMIENTO en Herramientas.
 """
 
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 
 class CustomUser(AbstractUser):
@@ -25,7 +28,6 @@ class CustomUser(AbstractUser):
         ('ADMIN', 'Administrador de Obra'),
         ('CONTRATISTA', 'Contratista / Empresa Obra'),
     )
-    # Define el rol principal del usuario para restringir o permitir accesos a vistas y API REST
     role = models.CharField(
         max_length=20, 
         choices=ROLE_CHOICES, 
@@ -51,7 +53,6 @@ class Contratista(models.Model):
     rut = models.CharField(max_length=12, unique=True, help_text="RUT Empresa (ej: 76.123.456-7)")
     razon_social = models.CharField(max_length=150, help_text="Razón Social o Nombre de la Empresa")
     telefono = models.CharField(max_length=20, help_text="Teléfono de contacto de la empresa")
-    # Bandera activada automáticamente cuando el contratista presenta arriendos atrasados
     bloqueado_por_morosidad = models.BooleanField(
         default=False, 
         help_text="Indica si el contratista está bloqueado para nuevos contratos debido a retrasos"
@@ -189,3 +190,19 @@ class CarroItem(models.Model):
 
     def __str__(self):
         return f"{self.usuario.username} - {self.herramienta.nombre} (x{self.cantidad})"
+
+
+# ==============================================================================
+# 8. SEÑALES AUTOMÁTICAS (SIGNALS)
+# ==============================================================================
+
+@receiver(post_save, sender=Mantenimiento)
+def actualizar_estado_herramienta_mantenimiento(sender, instance, created, **kwargs):
+    """
+    Actualiza automáticamente el estado de la herramienta a MANTENIMIENTO 
+    al crear cualquier bitácora en la tabla Mantenimiento.
+    """
+    if created:
+        herramienta = instance.herramienta
+        herramienta.estado = 'MANTENIMIENTO'
+        herramienta.save()
