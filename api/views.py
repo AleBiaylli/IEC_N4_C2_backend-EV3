@@ -1,5 +1,5 @@
 """
-VISTAS Y LÓGICA DE NEGOCIO (API/VIEWS.PY) - BUILDCORP AWS
+VISTAS Y LÓGICA DE NEGOCIO (API/VIEWS.PY) - BUILDCORP
 
 Contenido principal:
 1. Permisos RBAC (IsAdminOrReadOnly, IsOwnerContratistaOrAdmin).
@@ -279,6 +279,11 @@ def mis_alquileres_web(request):
     """
     Vista personal del Contratista. Muestra únicamente sus propias solicitudes de arriendo.
     """
+    # Si ingresa un admin a esta sección, lo redirigimos a su panel global
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
+        messages.info(request, "Redirigido al panel global de alquileres de administración.")
+        return redirect('alquileres_web')
+
     contratista = getattr(request.user, 'perfil_contratista', None)
     if not contratista:
         alquileres = Alquiler.objects.none()
@@ -379,9 +384,10 @@ def login_web_view(request):
             user = form.get_user()
             login(request, user)
 
-            # Cargar carro persistente guardado en la base de datos
-            items_bd = list(CarroItem.objects.filter(usuario=user).values_list('herramienta_id', flat=True))
-            request.session['carro_items'] = items_bd
+            # Cargar carro persistente guardado en la base de datos solo si no es Admin
+            if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN'):
+                items_bd = list(CarroItem.objects.filter(usuario=user).values_list('herramienta_id', flat=True))
+                request.session['carro_items'] = items_bd
 
             if user.is_staff or getattr(user, 'role', None) == 'ADMIN':
                 messages.success(request, f"¡Sesión iniciada como Administrador ({user.username})!")
@@ -423,6 +429,7 @@ def registro_web_view(request):
 def agregar_al_carro_html(request, herramienta_id):
     """
     Registra una herramienta en el carro persistente (BD CarroItem) y en la sesión activa.
+    Restringe la acción para Administradores.
     """
     if not request.user.is_authenticated:
         messages.warning(
@@ -430,6 +437,11 @@ def agregar_al_carro_html(request, herramienta_id):
             "Para solicitar herramientas y generar un contrato de obra debe iniciar sesión como Contratista."
         )
         return redirect('login_web')
+
+    # Restricción: Los administradores no realizan contrataciones ni usan carro de compras
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
+        messages.warning(request, "Los administradores no gestionan compras ni agregan herramientas al carro.")
+        return redirect('catalogo_web')
 
     herramienta = get_object_or_404(Herramienta, id=herramienta_id)
 
@@ -448,7 +460,15 @@ def agregar_al_carro_html(request, herramienta_id):
 
 @login_required(login_url='login_web')
 def mi_carro_view(request):
-    """Muestra los activos agregados sincronizando la base de datos con la sesión."""
+    """
+    Muestra los activos agregados sincronizando la base de datos con la sesión.
+    Redirige al Administrador a su dashboard.
+    """
+    # Restricción: Redirigir si el usuario es Administrador o Staff
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
+        messages.info(request, "Los administradores no poseen un carro de solicitudes. Redirigido al panel de monitoreo.")
+        return redirect('dashboard_admin')
+
     items_bd = list(CarroItem.objects.filter(usuario=request.user).values_list('herramienta_id', flat=True))
     carro_session = request.session.get('carro_items', [])
     carro_ids = list(set(items_bd + carro_session))
@@ -483,6 +503,10 @@ def pago_web_view(request):
     Paso 2 del Checkout: Muestra el resumen del contrato, valida morosidad,
     calcula la tarifa dinámica (precio_diario * cantidad * dias) y deriva al Portal Webpay Plus si es POST.
     """
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
+        messages.warning(request, "Los administradores no pueden acceder al flujo de checkout.")
+        return redirect('dashboard_admin')
+
     contratista = getattr(request.user, 'perfil_contratista', None)
     if contratista and contratista.bloqueado_por_morosidad:
         messages.error(
@@ -542,6 +566,10 @@ def procesar_checkout_html(request):
     Recepción y procesamiento de la transacción desde Webpay Plus.
     Asigna atómicamente las N unidades disponibles a estado EN_USO, genera los contratos y vacía el carro.
     """
+    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
+        messages.warning(request, "Los administradores no pueden procesar contrataciones.")
+        return redirect('dashboard_admin')
+
     if request.method == 'POST':
         items_bd = list(CarroItem.objects.filter(usuario=request.user).values_list('herramienta_id', flat=True))
         carro_session = request.session.get('carro_items', [])
