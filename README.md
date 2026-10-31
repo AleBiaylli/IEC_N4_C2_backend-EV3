@@ -3,7 +3,7 @@
 Sistema backend completo desarrollado en **Django 4.x** y **Django REST Framework (DRF)** para la gestión de flota de herramientas, arriendos para contratistas y control de mantenimientos preventivos y correctivos en obras de construcción.
 
 ---
-## Nota: El archivo .md de Prompts está en la raíz del proyecto como "Prompts_ia"
+## Nota: El archivo .md de Prompts está en la raíz del proyecto como "prompts_ia"
 ## Servidor en Producción (AWS EC2)
 
 - **IP Pública del Portal Web:** `http://44.220.131.111/`
