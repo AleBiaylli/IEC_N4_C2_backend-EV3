@@ -1,0 +1,25 @@
+{% extends "admin/index.html" %}
+
+{% block content %}
+<div style="background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); color: white; padding: 20px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);">
+    <h2 style="margin: 0 0 8px 0; color: #f59e0b; font-size: 1.3rem;">
+        Bienvenido al Portal Administrativo de BuildCorp
+    </h2>
+    <p style="margin: 0 0 12px 0; color: #94a3b8; font-size: 0.9rem;">
+        Sistema de Gestión de Flota, Contratos de Obra y Control de Morosidad (IEC_N4_C2 - 2026).
+    </p>
+    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <a href="/catalogo/" target="_blank" style="background-color: #f59e0b; color: #0f172a; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-decoration: none; font-size: 0.85rem;">
+            🌐 Ver Catálogo Web
+        </a>
+        <a href="/dashboard/" target="_blank" style="background-color: #3b82f6; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-decoration: none; font-size: 0.85rem;">
+            📊 Dashboard Métricas
+        </a>
+        <a href="/api/docs/" target="_blank" style="background-color: #10b981; color: white; padding: 6px 12px; border-radius: 4px; font-weight: bold; text-decoration: none; font-size: 0.85rem;">
+            📄 Documentación Swagger OpenAPI
+        </a>
+    </div>
+</div>
+
+{{ block.super }}
+{% endblock %}

@@ -1,0 +1,165 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard de Inventario - BuildCorp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <div>
+        <h2 class="fw-bold text-dark mb-1">
+            <i class="bi bi-speedometer2 text-warning me-2"></i>Panel de Control y Monitoreo de Flota
+        </h2>
+        <p class="text-muted mb-0">Visualización de activos en obra, cálculo de morosidad y métricas operativas</p>
+    </div>
+    <div class="d-flex gap-2">
+        <button class="btn btn-outline-secondary btn-sm" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise me-1"></i> Actualizar Datos
+        </button>
+        <span class="badge bg-success d-flex align-items-center px-3">
+            <i class="bi bi-check-circle-fill me-2"></i> Synchronized
+        </span>
+    </div>
+</div>
+
+<!-- Tarjetas de Métricas Estadísticas -->
+<div class="row g-4 mb-5">
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom bg-white shadow-sm h-100 border-start border-primary border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold small">Total Herramientas</span>
+                        <h2 class="display-6 fw-bold text-dark mt-2 mb-0">{{ total_herramientas }}</h2>
+                    </div>
+                    <div class="bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
+                        <i class="bi bi-tools fs-2"></i>
+                    </div>
+                </div>
+                <small class="text-muted mt-2 d-block"><i class="bi bi-box-seam me-1"></i> Flota total en inventario</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom bg-white shadow-sm h-100 border-start border-success border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold small">Disponibles</span>
+                        <h2 class="display-6 fw-bold text-success mt-2 mb-0">{{ disponibles }}</h2>
+                    </div>
+                    <div class="bg-success bg-opacity-10 p-3 rounded-circle text-success">
+                        <i class="bi bi-check2-square fs-2"></i>
+                    </div>
+                </div>
+                <small class="text-muted mt-2 d-block"><i class="bi bi-arrow-right-circle me-1"></i> Listas para arriendo</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom bg-white shadow-sm h-100 border-start border-warning border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold small">En Uso (En Obra)</span>
+                        <h2 class="display-6 fw-bold text-warning mt-2 mb-0">{{ en_uso }}</h2>
+                    </div>
+                    <div class="bg-warning bg-opacity-10 p-3 rounded-circle text-warning">
+                        <i class="bi bi-truck fs-2"></i>
+                    </div>
+                </div>
+                <small class="text-muted mt-2 d-block"><i class="bi bi-clock-history me-1"></i> Prestadas a contratistas</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div class="card card-custom bg-white shadow-sm h-100 border-start border-danger border-4">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <span class="text-uppercase text-muted fw-bold small">Morosos Bloqueados</span>
+                        <h2 class="display-6 fw-bold text-danger mt-2 mb-0">{{ contratistas_bloqueados }}</h2>
+                    </div>
+                    <div class="bg-danger bg-opacity-10 p-3 rounded-circle text-danger">
+                        <i class="bi bi-person-x-fill fs-2"></i>
+                    </div>
+                </div>
+                <small class="text-muted mt-2 d-block"><i class="bi bi-exclamation-triangle me-1"></i> Inhabilitados por atraso</small>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Sección Analítica con Gráficos y Tablero -->
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card card-custom bg-white shadow-sm h-100 p-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-pie-chart-fill text-primary me-2"></i>Estado de la Flota en Tiempo Real</h5>
+            <div class="position-relative d-flex justify-content-center" style="height: 280px;">
+                <canvas id="flotaChart"></canvas>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card card-custom bg-white shadow-sm h-100 p-4">
+            <h5 class="fw-bold text-dark mb-3"><i class="bi bi-lightning-charge-fill text-warning me-2"></i>Gestión Operativa de Obras</h5>
+            <p class="text-muted small">Acceda directamente a las acciones clave del sistema de alquileres:</p>
+            
+            <div class="d-grid gap-3 mt-2">
+                <a href="{% url 'catalogo_web' %}" class="btn btn-outline-primary p-3 text-start d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="d-block">Solicitar Herramientas</strong>
+                        <small class="text-muted">Explorar catálogo y disponibilidad</small>
+                    </div>
+                    <i class="bi bi-chevron-right fs-5"></i>
+                </a>
+
+                <a href="{% url 'alquileres_web' %}" class="btn btn-outline-danger p-3 text-start d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="d-block">Verificar Morosidad y Bloqueos</strong>
+                        <small class="text-muted">Validar contratos y fechas límite</small>
+                    </div>
+                    <i class="bi bi-chevron-right fs-5"></i>
+                </a>
+
+                <a href="/admin/api/mantenimiento/add/" target="_blank" class="btn btn-outline-dark p-3 text-start d-flex justify-content-between align-items-center">
+                    <div>
+                        <strong class="d-block">Programar Mantenimiento</strong>
+                        <small class="text-muted">Registro preventivo y correctivo</small>
+                    </div>
+                    <i class="bi bi-wrench-adjustable fs-5"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const ctx = document.getElementById('flotaChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Disponibles', 'En Uso', 'En Mantenimiento'],
+                datasets: [{
+                    data: [{{ disponibles }}, {{ en_uso }}, {{ en_mantenimiento|default:"0" }}],
+                    backgroundColor: ['#10b981', '#f59e0b', '#ef4444'],
+                    borderWidth: 2,
+                    borderColor: '#ffffff'
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { position: 'bottom' }
+                }
+            }
+        });
+    });
+</script>
+{% endblock %}

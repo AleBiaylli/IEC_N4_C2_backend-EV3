@@ -1,79 +1,65 @@
-"""
-SCRIPT DE CREACIÓN DE USUARIOS CLIENTES REALISTAS
+from api.models import CustomUser, Contratista
 
-Crea cuentas de usuario con roles de CLIENTE / PASAJERO utilizando nombres
-e emails institucionales para las pruebas del sistema de pasajes.
-"""
+# Lista de contratistas ficticios para poblar la base de datos
+contratistas_demo = [
+    {
+        "username": "Cristiano.OzvaldoSur",
+        "email": "contacto@constructorasur.cl",
+        "password": "Constructorasur26",
+        "rut": "76.111.222-3",
+        "razon_social": "Constructora del Sur SpA",
+        "telefono": "+56911112222"
+    },
+    {
+        "username": "JonasSanche.ingvial",
+        "email": "proyectos@ingvial.cl",
+        "password": "Vialaracuania64",
+        "rut": "77.333.444-5",
+        "razon_social": "Ingeniería Vial Araucanía Ltda.",
+        "telefono": "+56933334444"
+    },
+    {
+        "username": "Pedro.Sanchestemu",
+        "email": "contacto@obrastemuco.cl",
+        "password": "obramontajetemu",
+        "rut": "78.555.666-7",
+        "razon_social": "Obras y Montajes Temuco EIRL",
+        "telefono": "+56955556666"
+    },
+    {
+        "username": "Alexander.Gorbeayork",
+        "email": "gerencia@constructoragorbea.cl",
+        "password": "Gorbeayork07",
+        "rut": "79.777.888-9",
+        "razon_social": "Constructora Gorbea S.A.",
+        "telefono": "+56977778888"
+    }
+]
 
-import os
-import django
-
-# Configuración del entorno Django
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'IEC_N4_C2_backend.settings')
-django.setup()
-
-from django.contrib.auth import get_user_model
-
-User = get_user_model()
-
-def crear_clientes():
-    print("Iniciando creación de cuentas de clientes reales...")
-
-    # Lista de clientes con credenciales formales
-    clientes = [
-        {
-            'username': 'alexander.lagos',
-            'email': 'alexander.lagos@inacapmail.cl',
-            'first_name': 'Alexander',
-            'last_name': 'Lagos',
-            'password': 'Biaylli20070!',
-            'role': 'PASAJERO'
-        },
-        {
-            'username': 'carlos.mendoza',
-            'email': 'carlos.mendoza@empresa.cl',
-            'first_name': 'Carlos',
-            'last_name': 'Mendoza',
-            'password': 'ClientePass2026!',
-            'role': 'PASAJERO'
-        },
-        {
-            'username': 'valentina.silva',
-            'email': 'v.silva@transporte.cl',
-            'first_name': 'Valentina',
-            'last_name': 'Silva',
-            'password': 'ClientePass2026!',
-            'role': 'PASAJERO'
-        }
-    ]
-
-    for data_user in clientes:
-        username = data_user['username']
-        email = data_user['email']
-        password = data_user['password']
+# Proceso de creación en bucle
+creados = 0
+for data in contratistas_demo:
+    if not CustomUser.objects.filter(username=data["username"]).exists():
+        # 1. Crear el usuario CustomUser con rol CONTRATISTA
+        user = CustomUser.objects.create_user(
+            username=data["username"],
+            email=data["email"],
+            password=data["password"],
+            role='CONTRATISTA'
+        )
         
-        user = User.objects.filter(username=username).first()
-        if not user:
-            # Creación usando el CustomUser configurado en tu proyecto
-            user = User.objects.create_user(
-                username=username,
-                email=email,
-                password=password,
-                first_name=data_user['first_name'],
-                last_name=data_user['last_name']
-            )
-            # Asignar rol de pasajero/cliente si el modelo custom posee el atributo
-            if hasattr(user, 'role'):
-                user.role = data_user['role']
-                user.save()
-            print(f" Usuario creado: {username} | Email: {email}")
-        else:
-            # Si el usuario ya existe, actualizamos su contraseña para garantizar el acceso
-            user.set_password(password)
-            user.save()
-            print(f" Usuario actualizado: {username} | Email: {email}")
+        # 2. Crear el perfil de Contratista asociado
+        Contratista.objects.create(
+            usuario=user,
+            rut=data["rut"],
+            razon_social=data["razon_social"],
+            telefono=data["telefono"],
+            bloqueado_por_morosidad=False
+        )
+        creados += 1
+        print(f"✅ Contratista '{data['razon_social']}' ({data['username']}) creado con éxito.")
+    else:
+        print(f"⚠️ El usuario '{data['username']}' ya existía en la base de datos.")
 
-    print("\n ¡Usuarios registrados con éxito!")
-
-if __name__ == '__main__':
-    crear_clientes()
+print(f"\n🚀 Proceso finalizado. Se crearon {creados} nuevos contratistas.")
+exit()

@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}Mis Alquileres & Solicitudes - BuildCorp{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">
+                <i class="bi bi-journal-bookmark-fill text-warning me-2"></i>Mis Alquileres & Solicitudes
+            </h2>
+            <p class="text-muted mb-0">Gestión de activos en uso, devoluciones y solicitudes activas para su empresa.</p>
+        </div>
+        <a href="{% url 'catalogo_web' %}" class="btn btn-warning fw-bold text-dark">
+            <i class="bi bi-plus-lg me-1"></i> Solicitar Más Herramientas
+        </a>
+    </div>
+
+    {% if alquileres %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for alquiler in alquileres %}
+                <div class="col">
+                    <div class="card card-custom h-100 shadow-sm border-0 position-relative">
+                        <div class="card-header bg-dark text-white d-flex justify-content-between align-items-center py-3">
+                            <span class="fw-bold fs-6">Contrato #{{ alquiler.id }}</span>
+                            {% if alquiler.estado == 'ACTIVO' %}
+                                <span class="badge bg-success">ACTIVO</span>
+                            {% elif alquiler.estado == 'DEVUELTO' %}
+                                <span class="badge bg-secondary">DEVUELTO</span>
+                            {% elif alquiler.estado == 'ATRASADO' %}
+                                <span class="badge bg-danger">ATRASADO / MOROSO</span>
+                            {% endif %}
+                        </div>
+                        <div class="card-body">
+                            <h5 class="fw-bold text-dark mb-2">{{ alquiler.herramienta.nombre }}</h5>
+                            <p class="text-muted small mb-3">
+                                <i class="bi bi-qr-code me-1"></i>Código: <strong>{{ alquiler.herramienta.codigo_activo }}</strong>
+                            </p>
+
+                            <ul class="list-group list-group-flush mb-3 small">
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Fecha de Préstamo:</span>
+                                    <strong>{{ alquiler.fecha_prestamo|date:"d/m/Y H:i" }}</strong>
+                                </li>
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Devolución Estimada:</span>
+                                    <strong class="{% if alquiler.estado == 'ATRASADO' %}text-danger{% endif %}">
+                                        {{ alquiler.fecha_devolucion_estimada|date:"d/m/Y" }}
+                                    </strong>
+                                </li>
+                                {% if alquiler.fecha_devolucion_real %}
+                                    <li class="list-group-item px-0 d-flex justify-content-between">
+                                        <span class="text-muted">Devuelto el:</span>
+                                        <strong>{{ alquiler.fecha_devolucion_real|date:"d/m/Y H:i" }}</strong>
+                                    </li>
+                                {% endif %}
+                                <li class="list-group-item px-0 d-flex justify-content-between">
+                                    <span class="text-muted">Responsable Obra:</span>
+                                    <strong>{{ alquiler.responsable_obra }}</strong>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="card-footer bg-white border-0 pt-0 pb-3 d-flex gap-2">
+                            {% if alquiler.estado == 'ACTIVO' or alquiler.estado == 'ATRASADO' %}
+                                <!-- Botón Registrar Devolución -->
+                                <a href="{% url 'devolver_alquiler_web' alquiler.id %}" class="btn btn-outline-success btn-sm w-100 fw-bold">
+                                    <i class="bi bi-arrow-return-left me-1"></i> Devolver Activo
+                                </a>
+                                <!-- Botón Cancelar Solicitud -->
+                                <a href="{% url 'cancelar_alquiler_web' alquiler.id %}" class="btn btn-outline-danger btn-sm w-100 fw-bold">
+                                    <i class="bi bi-x-circle me-1"></i> Cancelar
+                                </a>
+                            {% else %}
+                                <button class="btn btn-light btn-sm w-100 text-muted disabled">
+                                    <i class="bi bi-check2-all me-1"></i> Finalizado
+                                </button>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center py-5 bg-white rounded-4 border shadow-sm">
+            <i class="bi bi-journal-x display-1 text-muted"></i>
+            <h4 class="mt-3 text-dark fw-bold">No registra solicitudes ni contratos activos</h4>
+            <p class="text-muted mb-4">Explore nuestro catálogo y solicite el equipamiento necesario para su obra.</p>
+            <a href="{% url 'catalogo_web' %}" class="btn btn-warning fw-bold text-dark px-4">
+                <i class="bi bi-tools me-1"></i> Ir al Catálogo de Activos
+            </a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

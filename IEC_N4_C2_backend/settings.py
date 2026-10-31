@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-1yehl@i-=a6jfih263$_v$u2c7^b0n18nfavu=2%z2uqel)u2k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -58,20 +58,14 @@ ROOT_URLCONF = 'IEC_N4_C2_backend.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        # Agregamos la ruta de la carpeta raíz aquí
         'DIRS': [BASE_DIR / 'templates'],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-            ],
-            # Cargadores explícitos: prioriza la carpeta local 'templates'
-            'loaders': [
-                'django.template.loaders.filesystem.Loader',
-                'django.template.loaders.app_directories.Loader',
             ],
         },
     },
@@ -88,7 +82,7 @@ AUTH_USER_MODEL = 'api.CustomUser'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'bd_buses_interurbanos',
+        'NAME': 'bd_buildcorp',
         'USER': 'postgres',
         'PASSWORD': 'Biaylli20070',
         'HOST': '127.0.0.1',
@@ -133,6 +127,9 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+STATICFILES_DIRS = []
 
 # Email
 # https://docs.djangoproject.com/en/6.1/topics/email/#topic-email-configuration
@@ -154,6 +151,15 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+}
+
+SPECTACULAR_SETTINGS = {
+    'TITLE': 'BuildCorp API - Control y Alquiler de Herramientas',
+    'DESCRIPTION': 'API REST para gestión de flota de construcción, alquileres y control de morosidad.',
+    'VERSION': '1.0.0',
+    'SERVE_INCLUDE_SCHEMA': False,
+    # Evita que vistas web no pertenecientes a REST tumben el generador
+    'SCHEMA_COERCE_PATH_PK_SUFFIX': True,
 }
 
 from datetime import timedelta

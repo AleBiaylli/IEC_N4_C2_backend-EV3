@@ -1,0 +1,74 @@
+{% extends 'base.html' %}
+
+{% block title %}Control de Alquileres - BuildCorp{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-bottom">
+    <div>
+        <h2 class="fw-bold text-dark mb-1">
+            <i class="bi bi-journal-check text-warning me-2"></i>Módulo de Control de Alquileres y Morosidad
+        </h2>
+        <p class="text-muted mb-0">Seguimiento de entregas, devoluciones y bloqueo automático de contratistas</p>
+    </div>
+</div>
+
+<!-- Tabla Principal de Alquileres -->
+<div class="card card-custom bg-white shadow-sm p-3">
+    <div class="table-responsive">
+        <table class="table table-hover align-middle mb-0">
+            <thead class="table-dark">
+                <tr>
+                    <th scope="col" class="py-3"># ID</th>
+                    <th scope="col" class="py-3">Herramienta / Activo</th>
+                    <th scope="col" class="py-3">Contratista</th>
+                    <th scope="col" class="py-3">Fecha Préstamo</th>
+                    <th scope="col" class="py-3">Devolución Estimada</th>
+                    <th scope="col" class="py-3">Responsable Obra</th>
+                    <th scope="col" class="py-3">Estado Alquiler</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for a in alquileres %}
+                <tr class="{% if a.estado == 'ATRASADO' %}table-danger{% endif %}">
+                    <td class="fw-bold">#{{ a.id }}</td>
+                    <td>
+                        <span class="fw-bold text-dark d-block">{{ a.herramienta.nombre }}</span>
+                        <small class="text-muted"><code>{{ a.herramienta.codigo_activo }}</code></small>
+                    </td>
+                    <td>
+                        <strong class="d-block">{{ a.contratista.razon_social }}</strong>
+                        {% if a.contratista.bloqueado_por_morosidad %}
+                            <span class="badge bg-danger mt-1">
+                                <i class="bi bi-lock-fill me-1"></i> BLOQUEADO POR MORA
+                            </span>
+                        {% else %}
+                            <span class="badge bg-success mt-1">Habilitado</span>
+                        {% endif %}
+                    </td>
+                    <td class="small">{{ a.fecha_prestamo|date:"d/m/Y H:i" }}</td>
+                    <td class="small fw-bold {% if a.estado == 'ATRASADO' %}text-danger{% endif %}">
+                        {{ a.fecha_devolucion_estimada|date:"d/m/Y H:i" }}
+                    </td>
+                    <td>
+                        <span class="d-block small fw-bold"><i class="bi bi-person me-1"></i>{{ a.responsable_obra }}</span>
+                        <small class="text-muted"><i class="bi bi-pen me-1"></i>Firma: {{ a.firma_digital }}</small>
+                    </td>
+                    <td>
+                        <span class="badge badge-status {% if a.estado == 'ACTIVO' %}bg-primary{% elif a.estado == 'DEVUELTO' %}bg-success{% else %}bg-danger{% endif %}">
+                            {{ a.get_estado_display }}
+                        </span>
+                    </td>
+                </tr>
+                {% empty %}
+                <tr>
+                    <td colspan="7" class="text-center py-5 text-muted">
+                        <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                        No existen registros de alquileres generados en el sistema.
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

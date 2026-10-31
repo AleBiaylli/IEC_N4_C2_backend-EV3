@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}{% if accion == 'devolver' %}Devolver{% else %}Cancelar{% endif %} Contrato #{{ alquiler.id }} - BuildCorp{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            <div class="card card-custom shadow-sm border-0">
+                <div class="card-header {% if accion == 'devolver' %}bg-success{% else %}bg-danger{% endif %} text-white p-3">
+                    <h4 class="card-title mb-0 fw-bold">
+                        {% if accion == 'devolver' %}
+                            <i class="bi bi-arrow-return-left me-2"></i>Confirmar Devolución de Herramienta
+                        {% else %}
+                            <i class="bi bi-exclamation-triangle-fill me-2"></i>Confirmar Cancelación de Solicitud
+                        {% endif %}
+                    </h4>
+                </div>
+                <div class="card-body p-4">
+                    <p class="lead mb-4">
+                        {% if accion == 'devolver' %}
+                            ¿Está seguro de que desea registrar la devolución de este activo? La herramienta cambiará su estado a DISPONIBLE en la flota.
+                        {% else %}
+                            ¿Está seguro de que desea cancelar esta solicitud? El contrato se eliminará y el activo quedará liberado.
+                        {% endif %}
+                    </p>
+
+                    <div class="bg-light p-3 rounded-3 border mb-4">
+                        <h5 class="fw-bold text-dark border-bottom pb-2">Resumen del Contrato #{{ alquiler.id }}</h5>
+                        <p class="mb-1"><strong>Herramienta:</strong> {{ alquiler.herramienta.nombre }} ({{ alquiler.herramienta.codigo_activo }})</p>
+                        <p class="mb-1"><strong>Empresa Contratista:</strong> {{ alquiler.contratista.razon_social }}</p>
+                        <p class="mb-1"><strong>Responsable en Obra:</strong> {{ alquiler.responsable_obra }}</p>
+                        <p class="mb-0"><strong>Fecha de Préstamo:</strong> {{ alquiler.fecha_prestamo|date:"d/m/Y H:i" }}</p>
+                    </div>
+
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        <div class="d-flex justify-content-end gap-2">
+                            <a href="{% if user.role == 'ADMIN' or user.is_staff %}{% url 'alquileres_web' %}{% else %}{% url 'mis_alquileres_web' %}{% endif %}" class="btn btn-secondary px-4 fw-bold">
+                                Volver Atrás
+                            </a>
+                            <button type="submit" class="btn {% if accion == 'devolver' %}btn-success{% else %}btn-danger{% endif %} px-4 fw-bold">
+                                {% if accion == 'devolver' %}
+                                    <i class="bi bi-check-lg me-1"></i> Confirmar Devolución
+                                {% else %}
+                                    <i class="bi bi-x-lg me-1"></i> Confirmar Cancelación
+                                {% endif %}
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,110 +1,102 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pasarela de Pago - Buses Interurbanos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
-    <style>
-        body { background-color: #f8f9fa; min-height: 100vh; display: flex; flex-direction: column; }
-        .main-container { flex: 1; }
-        .checkout-steps { display: flex; background-color: #e2e8f0; border-radius: 2rem; overflow: hidden; margin-bottom: 2rem; border: 1px solid #cbd5e1; }
-        .step-item { flex: 1; padding: 0.75rem 1rem; text-align: center; font-weight: 600; color: #64748b; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
-        .step-item.active { background-color: #0284c7; color: #ffffff; border-radius: 2rem; }
-        .step-number { width: 26px; height: 26px; border-radius: 50%; border: 2px solid currentColor; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; }
-        footer { background-color: #0f172a; color: #94a3b8; padding: 1.5rem 0; margin-top: auto; border-top: 3px solid #0284c7; }
-    </style>
-</head>
-<body>
+{% extends 'base.html' %}
 
-    <!-- NAVBAR -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
-        <div class="container">
-            <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-                <i class="bi bi-bus-front-fill text-info fs-3"></i>
-                <span class="fw-bold">Buses Interurbanos</span>
-            </a>
-        </div>
-    </nav>
+{% block title %}Firma y Checkout de Contrato - BuildCorp{% endblock %}
 
-    <div class="container main-container my-4">
-        <!-- BARRA DE PASOS EN PASO 2 (PAGO) -->
-        <div class="checkout-steps shadow-sm">
-            <div class="step-item"><span class="step-number">1</span> Ida</div>
-            <div class="step-item active"><span class="step-number">2</span> Pago</div>
-            <div class="step-item"><span class="step-number">3</span> Confirmación</div>
-        </div>
+{% block content %}
+<div class="container py-4">
+    <!-- BARRA DE PASOS EN PASO 2 (FIRMA & CONTRATO) -->
+    <div class="checkout-steps shadow-sm mb-4">
+        <div class="step-item"><span class="step-number">1</span> Solicitud</div>
+        <div class="step-item active"><span class="step-number">2</span> Firma & Contrato</div>
+        <div class="step-item"><span class="step-number">3</span> Confirmación</div>
+    </div>
 
-        <div class="row g-4">
-            <!-- FORMULARIO DE TARJETA -->
-            <div class="col-lg-7">
-                <div class="card border-0 shadow-sm p-4">
-                    <h5 class="fw-bold mb-3"><i class="bi bi-credit-card text-primary me-2"></i>Método de Pago</h5>
-                    
-                    <form method="POST" action="{% url 'procesar_checkout' %}">
-                        {% csrf_token %}
-                        
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Nombre en la Tarjeta</label>
-                            <input type="text" class="form-control" required placeholder="Ej: Alexander Lagos" value="{{ user.get_full_name|default:user.username }}">
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label small fw-bold">Número de Tarjeta</label>
-                            <div class="input-group">
-                                <span class="input-group-text bg-light"><i class="bi bi-credit-card-2-front"></i></span>
-                                <input type="text" class="form-control" maxlength="16" required placeholder="1234 5678 9012 3456" value="4576123489012345">
-                            </div>
-                        </div>
-
-                        <div class="row g-2 mb-4">
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">Vencimiento</label>
-                                <input type="text" class="form-control" placeholder="MM/AA" maxlength="5" required value="12/28">
-                            </div>
-                            <div class="col-6">
-                                <label class="form-label small fw-bold">CVV / CVC</label>
-                                <input type="password" class="form-control" maxlength="4" required placeholder="123" value="789">
-                            </div>
-                        </div>
-
-                        <button type="submit" class="btn btn-success fw-bold w-100 py-2 shadow-sm">
-                            <i class="bi bi-shield-check me-1"></i>Pagar ${{ total }}
-                        </button>
-                    </form>
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card card-custom shadow-sm border-0">
+                <div class="card-header bg-dark text-white p-3">
+                    <h4 class="card-title mb-0 fw-bold">
+                        <i class="bi bi-file-earmark-text-fill text-warning me-2"></i>Firma de Contrato y Selección de Unidades
+                    </h4>
                 </div>
-            </div>
-
-            <!-- DETALLE DE COMPRA -->
-            <div class="col-lg-5">
-                <div class="card border-0 shadow-sm p-4">
-                    <h5 class="fw-bold mb-3 border-bottom pb-2">Resumen de Pasajes</h5>
-                    {% for item in items %}
-                        <div class="d-flex justify-content-between align-items-center mb-2 small">
-                            <div>
-                                <strong>{{ item.asiento_servicio.servicio.ruta.origen.ciudad }} → {{ item.asiento_servicio.servicio.ruta.destino.ciudad }}</strong>
-                                <div class="text-muted">Asiento N° {{ item.asiento_servicio.numero_asiento }} ({{ item.pasajero_nombre }})</div>
-                            </div>
-                            <span class="fw-bold text-success">${{ item.asiento_servicio.precio }}</span>
+                <div class="card-body p-4">
+                    {% if items %}
+                        <div class="bg-light p-3 rounded-3 border mb-4">
+                            <h5 class="fw-bold text-dark border-bottom pb-2">Resumen del Activo Solicitado</h5>
+                            {% for item in items %}
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="fw-bold mb-1">{{ item.nombre }}</h6>
+                                        <p class="text-muted small mb-0">Categoría: {{ item.categoria.nombre }}</p>
+                                    </div>
+                                    <span class="badge bg-success p-2">Stock Disponible: {{ stock_disponible }} un.</span>
+                                </div>
+                            {% endfor %}
                         </div>
-                    {% endfor %}
-                    <hr>
-                    <div class="d-flex justify-content-between fs-5 fw-bold">
-                        <span>Total:</span>
-                        <span class="text-primary">${{ total }}</span>
-                    </div>
+
+                        <!-- Se envía por POST a pago_web para cargar la pasarela de Webpay -->
+                        <form method="POST" action="{% url 'pago_web' %}">
+                            {% csrf_token %}
+                            
+                            <!-- Selector de Cantidad de Unidades -->
+                            <div class="mb-3">
+                                <label for="cantidad" class="form-label fw-bold">
+                                    <i class="bi bi-boxes me-1 text-warning"></i>Cantidad de unidades requeridas:
+                                </label>
+                                <input 
+                                    type="number" 
+                                    id="cantidad" 
+                                    name="cantidad" 
+                                    class="form-control" 
+                                    value="1" 
+                                    min="1" 
+                                    max="{{ stock_disponible }}" 
+                                    required
+                                >
+                                <div class="form-text">
+                                    Puede solicitar hasta un máximo de <strong>{{ stock_disponible }}</strong> unidades disponibles en este momento.
+                                </div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="responsable_obra" class="form-label fw-bold">Nombre del Responsable en Obra:</label>
+                                <input type="text" id="responsable_obra" name="responsable_obra" class="form-control" value="{{ user.username }}" required>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="dias_estimados" class="form-label fw-bold">Días Estimados de Préstamo:</label>
+                                <select id="dias_estimados" name="dias_estimados" class="form-select">
+                                    <option value="3">3 Días</option>
+                                    <option value="7" selected>7 Días (1 Semana)</option>
+                                    <option value="15">15 Días</option>
+                                    <option value="30">30 Días (1 Mes)</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label for="firma_digital" class="form-label fw-bold">Token de Firma Digital:</label>
+                                <input type="text" id="firma_digital" name="firma_digital" class="form-control" value="FIRMA-DIGITAL-{{ user.id }}-2026" readonly>
+                                <div class="form-text">Generado automáticamente bajo el estándar de seguridad de BuildCorp.</div>
+                            </div>
+
+                            <div class="d-flex justify-content-between align-items-center">
+                                <a href="{% url 'mi_carro' %}" class="btn btn-secondary px-4 fw-bold">
+                                    <i class="bi bi-arrow-left me-1"></i> Volver al Carro
+                                </a>
+                                <button type="submit" class="btn btn-warning text-dark fw-bold px-4">
+                                    <i class="bi bi-credit-card-fill me-1"></i> Ir a Pagar con Webpay
+                                </button>
+                            </div>
+                        </form>
+                    {% else %}
+                        <div class="text-center py-4">
+                            <p class="text-muted mb-3">No hay ítems en el carro para procesar.</p>
+                            <a href="{% url 'catalogo_web' %}" class="btn btn-warning text-dark fw-bold">Ir al Catálogo</a>
+                        </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
     </div>
-
-    <!-- FOOTER -->
-    <footer class="text-center">
-        <div class="container">
-            <p class="mb-1 text-white"><strong>Desarrollado por:</strong> {{ student_name }}</p>
-            <p class="mb-0 small"><span class="badge bg-secondary me-2">{{ student_section }}</span><span class="badge bg-dark">Año {{ student_year }}</span></p>
-        </div>
-    </footer>
-</body>
-</html>
+</div>
+{% endblock %}

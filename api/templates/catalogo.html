@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}Catálogo de Herramientas y Equipos - BuildCorp{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <!-- ENCABEZADO PRINCIPAL -->
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <div>
+            <h2 class="fw-bold text-dark mb-1">
+                <i class="bi bi-tools text-warning me-2"></i>Catálogo de Activos de Obra
+            </h2>
+            <p class="text-muted small mb-0">Seleccione los equipos requeridos para sus proyectos y gestione la solicitud de alquiler.</p>
+        </div>
+        <div>
+        </div>
+    </div>
+
+    <!-- BARRA DE FILTROS -->
+    <div class="card card-custom shadow-sm mb-4 border-0">
+        <div class="card-body p-3 bg-light rounded-3">
+            <form method="GET" action="{% url 'catalogo_web' %}" class="row g-2 align-items-center">
+                <div class="col-md-5">
+                    <label for="categoria" class="form-label small fw-bold text-secondary mb-1">Categoría:</label>
+                    <select name="categoria" id="categoria" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">-- Todas las Categorías --</option>
+                        {% for cat in categorias %}
+                            <option value="{{ cat.id }}" {% if request.GET.categoria == cat.id|stringformat:"i" %}selected{% endif %}>
+                                {{ cat.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-5">
+                    <label for="estado" class="form-label small fw-bold text-secondary mb-1">Disponibilidad:</label>
+                    <select name="estado" id="estado" class="form-select form-select-sm" onchange="this.form.submit()">
+                        <option value="">-- Todos los Estados --</option>
+                        <option value="DISPONIBLE" {% if request.GET.estado == 'DISPONIBLE' %}selected{% endif %}>Disponible</option>
+                        <option value="EN_USO" {% if request.GET.estado == 'EN_USO' %}selected{% endif %}>En Uso / Arrendado</option>
+                        <option value="MANTENIMIENTO" {% if request.GET.estado == 'MANTENIMIENTO' %}selected{% endif %}>En Mantenimiento</option>
+                    </select>
+                </div>
+                <div class="col-md-2 d-flex align-items-end">
+                    <a href="{% url 'catalogo_web' %}" class="btn btn-outline-secondary btn-sm w-100 mt-3">
+                        <i class="bi bi-arrow-counterclockwise me-1"></i>Limpiar
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- GRILLA DE HERRAMIENTAS -->
+    <div class="row g-4">
+        {% for herramienta in herramientas %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card card-custom h-100 shadow-sm border-0 d-flex flex-column">
+                    <div class="card-header bg-white border-0 pt-3 px-3 d-flex justify-content-between align-items-center">
+                        <span class="badge bg-secondary font-monospace">{{ herramienta.codigo_activo }}</span>
+                        
+                        {% if herramienta.estado == 'DISPONIBLE' %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Disponible</span>
+                        {% elif herramienta.estado == 'EN_USO' %}
+                            <span class="badge bg-primary"><i class="bi bi-clock-history me-1"></i>En Uso</span>
+                        {% else %}
+                            <span class="badge bg-danger"><i class="bi bi-wrench-adjustable me-1"></i>Mantenimiento</span>
+                        {% endif %}
+                    </div>
+
+                    <div class="card-body px-3 py-2 flex-grow-1">
+                        <h5 class="fw-bold text-dark mb-1">{{ herramienta.nombre }}</h5>
+                        <p class="text-muted small mb-2">
+                            <i class="bi bi-tag me-1 text-warning"></i>{{ herramienta.categoria.nombre }}
+                        </p>
+
+                        <!-- PRECIO POR DÍA DESTACADO -->
+                        <div class="bg-light p-2 rounded-3 my-3 d-flex justify-content-between align-items-center border">
+                            <span class="small text-muted fw-bold">Tarifa Diaria:</span>
+                            <span class="fs-5 fw-bold text-success">${{ herramienta.precio_por_dia }} <small class="fs-6 text-muted font-normal">CLP/día</small></span>
+                        </div>
+
+                        <div class="small text-secondary">
+                            <i class="bi bi-speedometer me-1"></i>Horómetro: <strong>{{ herramienta.horas_uso_acumuladas }} hrs de uso</strong>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 p-3 pt-0">
+                        {% if herramienta.estado == 'DISPONIBLE' %}
+                            <a href="{% url 'agregar_al_carro_html' herramienta.id %}" class="btn btn-warning w-100 text-dark fw-bold">
+                                <i class="bi bi-cart-plus me-1"></i>Agregar a Solicitud
+                            </a>
+                        {% else %}
+                            <button class="btn btn-secondary w-100 fw-bold" disabled>
+                                <i class="bi bi-slash-circle me-1"></i>No Disponible
+                            </button>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <div class="col-12 text-center py-5">
+                <i class="bi bi-search fs-1 text-muted d-block mb-2"></i>
+                <h5 class="text-muted">No se encontraron activos que coincidan con el filtro seleccionado.</h5>
+                <a href="{% url 'catalogo_web' %}" class="btn btn-outline-warning text-dark fw-bold mt-2">Ver todo el catálogo</a>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

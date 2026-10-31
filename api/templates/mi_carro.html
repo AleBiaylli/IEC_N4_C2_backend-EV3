@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mi Carro de Compras - Buses Interurbanos</title>
+    <title>Mi Carro de Solicitud - BuildCorp</title>
     <!-- Framework Bootstrap 5 CSS e Iconos -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
@@ -37,10 +37,10 @@
             gap: 0.5rem;
         }
         .step-item.active {
-            background-color: #0284c7;
+            background-color: #f59e0b;
             color: #ffffff;
             border-radius: 2rem;
-            box-shadow: 0 4px 12px rgba(2, 132, 199, 0.25);
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.25);
         }
         .step-number {
             width: 26px;
@@ -65,7 +65,7 @@
             color: #94a3b8; 
             padding: 1.5rem 0; 
             margin-top: auto; 
-            border-top: 3px solid #0284c7; 
+            border-top: 3px solid #f59e0b; 
         }
     </style>
 </head>
@@ -75,15 +75,15 @@
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
         <div class="container">
             <a class="navbar-brand d-flex align-items-center gap-2" href="{% url 'home' %}">
-                <i class="bi bi-bus-front-fill text-info fs-3"></i>
-                <span class="fw-bold">Buses Interurbanos</span>
+                <i class="bi bi-tools text-warning fs-3"></i>
+                <span class="fw-bold">BuildCorp</span>
             </a>
             <div class="navbar-nav ms-auto d-flex align-items-center gap-3">
-                <a class="nav-link" href="{% url 'buscar_pasajes' %}"><i class="bi bi-search me-1"></i>Buscar Pasajes</a>
+                <a class="nav-link" href="{% url 'catalogo_web' %}"><i class="bi bi-box-seam me-1"></i>Catálogo Activos</a>
                 <a class="nav-link active" href="{% url 'mi_carro' %}"><i class="bi bi-cart3 me-1"></i>Mi Carro</a>
                 
-                <span class="badge {% if user.role == 'ADMIN_FLOTA' %}bg-warning text-dark{% else %}bg-info text-dark{% endif %}">
-                    <i class="bi bi-person-badge-fill me-1"></i>Rol: {{ user.role|default:"PASAJERO" }}
+                <span class="badge {% if user.role == 'ADMIN_OBRA' %}bg-warning text-dark{% else %}bg-info text-dark{% endif %}">
+                    <i class="bi bi-person-badge-fill me-1"></i>Rol: {{ user.role|default:"CONTRATISTA" }}
                 </span>
                 
                 <a href="{% url 'logout_web' %}" class="btn btn-sm btn-outline-danger"><i class="bi bi-box-arrow-right me-1"></i>Salir</a>
@@ -94,20 +94,20 @@
     <!-- CONTENIDO PRINCIPAL -->
     <div class="container main-container my-4">
         
-        <!-- BARRA DE PASOS EN PASO 2 (PAGO) -->
+        <!-- BARRA DE PASOS EN PASO 1 (SOLICITUD) -->
         <div class="checkout-steps shadow-sm">
-            <div class="step-item">
-                <span class="step-number">1</span> Ida
-            </div>
             <div class="step-item active">
-                <span class="step-number">2</span> Pago
+                <span class="step-number">1</span> Solicitud
+            </div>
+            <div class="step-item">
+                <span class="step-number">2</span> Firma & Contrato
             </div>
             <div class="step-item">
                 <span class="step-number">3</span> Confirmación
             </div>
         </div>
 
-        <h4 class="fw-bold mb-3"><i class="bi bi-cart-check-fill text-info me-2"></i>Mi Carro de Compras</h4>
+        <h4 class="fw-bold mb-3"><i class="bi bi-cart-check-fill text-warning me-2"></i>Carro de Herramientas Solicitadas</h4>
 
         {% if messages %}
             {% for message in messages %}
@@ -127,10 +127,9 @@
                             <table class="table table-hover align-middle mb-0">
                                 <thead class="table-light">
                                     <tr>
-                                        <th>Trayecto / Bus</th>
-                                        <th>Pasajero</th>
-                                        <th class="text-center">Asiento</th>
-                                        <th class="text-end">Precio</th>
+                                        <th>Herramienta / Equipo</th>
+                                        <th>Código Activo</th>
+                                        <th class="text-center">Estado</th>
                                         <th class="text-center">Acción</th>
                                     </tr>
                                 </thead>
@@ -138,31 +137,17 @@
                                     {% for item in items %}
                                     <tr>
                                         <td>
-                                            <div class="fw-bold text-dark fs-6">
-                                                {{ item.asiento_servicio.servicio.ruta.origen.ciudad }} 
-                                                <i class="bi bi-arrow-right text-muted mx-1"></i> 
-                                                {{ item.asiento_servicio.servicio.ruta.destino.ciudad }}
-                                            </div>
-                                            <div class="small text-muted">
-                                                <i class="bi bi-calendar-event me-1"></i>{{ item.asiento_servicio.servicio.fecha_hora_salida|date:"d/m/Y H:i" }} hrs
-                                            </div>
+                                            <div class="fw-bold text-dark fs-6">{{ item.nombre }}</div>
+                                            <div class="small text-muted"><i class="bi bi-tag me-1"></i>Categoría: {{ item.categoria_nombre }}</div>
                                         </td>
                                         <td>
-                                            <div class="fw-semibold text-dark">{{ item.pasajero_nombre }}</div>
+                                            <code class="fw-bold text-dark">{{ item.codigo_activo }}</code>
                                         </td>
                                         <td class="text-center">
-                                            <span class="badge bg-primary fs-6">N° {{ item.asiento_servicio.numero_asiento }}</span>
-                                        </td>
-                                        <td class="fw-bold text-end text-success">
-                                            ${{ item.precio_calculado }}
+                                            <span class="badge bg-success">DISPONIBLE</span>
                                         </td>
                                         <td class="text-center">
                                             <div class="btn-group btn-group-sm" role="group">
-                                                <!-- BOTÓN EDITAR ASIENTO/HORA -->
-                                                <a href="{% url 'editar_item_carro' item.id %}" class="btn btn-outline-warning" title="Cambiar hora o asiento">
-                                                    <i class="bi bi-pencil-square"></i>
-                                                </a>
-                                                <!-- BOTÓN ELIMINAR -->
                                                 <a href="{% url 'eliminar_item_carro' item.id %}" class="btn btn-outline-danger" title="Eliminar del carro">
                                                     <i class="bi bi-trash"></i>
                                                 </a>
@@ -176,44 +161,34 @@
                     {% else %}
                         <div class="text-center py-5">
                             <i class="bi bi-cart-x fs-1 text-muted d-block mb-3"></i>
-                            <h5 class="fw-bold text-secondary">Tu carro de compras está vacío</h5>
-                            <p class="text-muted small mb-3">Selecciona un pasaje de la lista para continuar con tu reserva.</p>
-                            <a href="{% url 'buscar_pasajes' %}" class="btn btn-info text-white fw-bold shadow-sm">
-                                <i class="bi bi-search me-1"></i>Buscar Pasajes
+                            <h5 class="fw-bold text-secondary">Tu carro de herramientas está vacío</h5>
+                            <p class="text-muted small mb-3">Selecciona activos del catálogo para solicitar un préstamo.</p>
+                            <a href="{% url 'catalogo_web' %}" class="btn btn-warning text-dark fw-bold shadow-sm">
+                                <i class="bi bi-box-seam me-1"></i>Ir al Catálogo
                             </a>
                         </div>
                     {% endif %}
                 </div>
             </div>
 
-            <!-- RESUMEN DE PAGO -->
+            <!-- RESUMEN DE SOLICITUD -->
             <div class="col-lg-4">
                 <div class="card carro-card bg-white p-4">
-                    <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Resumen de la Compra</h5>
+                    <h5 class="fw-bold text-dark mb-3 border-bottom pb-2">Resumen de la Solicitud</h5>
                     
-                    <div class="d-flex justify-content-between mb-2 small">
-                        <span class="text-muted">Cantidad de pasajes:</span>
-                        <span class="fw-bold">{{ items|length }}</span>
-                    </div>
-
                     <div class="d-flex justify-content-between mb-3 border-bottom pb-2">
-                        <span class="text-muted">Subtotal:</span>
-                        <span class="fw-bold">${{ total }}</span>
-                    </div>
-
-                    <div class="d-flex justify-content-between mb-4 fs-5 fw-bold">
-                        <span>Total a Pagar:</span>
-                        <span class="text-primary">${{ total }}</span>
+                        <span class="text-muted">Total de Herramientas:</span>
+                        <span class="fw-bold fs-5 text-dark">{{ items|length }} equipo(s)</span>
                     </div>
 
                     {% if items %}
-                        <a href="{% url 'pago_web' %}" class="btn btn-success fw-bold w-100 py-2 shadow-sm mb-2">
-                            <i class="bi bi-credit-card-fill me-1"></i>Proceder al Pago
+                        <a href="{% url 'pago_web' %}" class="btn btn-warning text-dark fw-bold w-100 py-2 shadow-sm mb-2">
+                            <i class="bi bi-file-earmark-check me-1"></i>Proceder a Firma y Contrato
                         </a>
                     {% endif %}
 
-                    <a href="{% url 'buscar_pasajes' %}" class="btn btn-outline-secondary w-100 py-2">
-                        <i class="bi bi-plus-circle me-1"></i>Agregar otro pasaje
+                    <a href="{% url 'catalogo_web' %}" class="btn btn-outline-secondary w-100 py-2">
+                        <i class="bi bi-plus-circle me-1"></i>Agregar otra herramienta
                     </a>
                 </div>
             </div>
@@ -224,10 +199,10 @@
     <!-- FOOTER -->
     <footer class="text-center">
         <div class="container">
-            <p class="mb-1 text-white"><strong>Desarrollado por:</strong> {{ student_name }}</p>
+            <p class="mb-1 text-white"><strong>Desarrollado por:</strong> Alexander Biaylli Lagos Allilef</p>
             <p class="mb-0 small">
-                <span class="badge bg-secondary me-2">{{ student_section }}</span>
-                <span class="badge bg-dark">Año {{ student_year }}</span>
+                <span class="badge bg-secondary me-2">IEC_N4_C2</span>
+                <span class="badge bg-dark">Año 2026</span>
             </p>
         </div>
     </footer>

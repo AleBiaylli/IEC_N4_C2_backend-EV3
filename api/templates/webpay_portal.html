@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Webpay Plus - Transbank</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <style>
+        body { 
+            background-color: #f6f7fb; 
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #2d3748;
+        }
+        .webpay-brand { font-weight: 800; font-size: 1.8rem; color: #6b21a8; letter-spacing: -1px; }
+        .webpay-container {
+            max-width: 920px;
+            background: #ffffff;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        .option-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #ffffff;
+            position: relative;
+        }
+        .option-card.active { border-color: #9333ea; }
+        .option-card .check-icon { position: absolute; top: 10px; right: 10px; color: #9333ea; display: none; }
+        .option-card.active .check-icon { display: block; }
+        .btn-webpay-purple {
+            background-color: #6b21a8;
+            color: white;
+            font-weight: 700;
+            border: none;
+            border-radius: 8px;
+            padding: 0.8rem;
+        }
+        .btn-webpay-purple:hover { background-color: #581c87; color: white; }
+        .side-panel { background-color: #fafbfd; border-left: 1px solid #edf2f7; }
+    </style>
+</head>
+<body class="py-4 min-vh-100 d-flex flex-column justify-content-center">
+
+    <div class="container">
+        <!-- Logo Webpay Transbank -->
+        <div class="mb-4 ps-2">
+            <span class="webpay-brand">webpay<span class="text-danger">.</span></span>
+            <div class="text-muted small" style="margin-top: -8px; font-size: 0.75rem;">transbank.</div>
+        </div>
+
+        <div class="webpay-container mx-auto">
+            <form method="POST" action="{% url 'procesar_checkout' %}">
+                {% csrf_token %}
+                <input type="hidden" name="cantidad" value="{{ cantidad }}">
+                <input type="hidden" name="responsable_obra" value="{{ responsable_obra }}">
+                <input type="hidden" name="dias_estimados" value="{{ dias_estimados }}">
+                <input type="hidden" name="firma_digital" value="{{ firma_digital }}">
+
+                <div class="row g-0">
+                    <!-- Columna Izquierda: Detalle del Arriendo y Medio de Pago -->
+                    <div class="col-md-6 p-4 p-lg-5">
+                        <div class="d-flex justify-content-between align-items-center mb-4">
+                            <div>
+                                <div class="text-muted small">Estás pagando en:</div>
+                                <div class="d-flex align-items-center gap-2 mt-1">
+                                    <div class="bg-light p-2 rounded border">
+                                        <i class="bi bi-building-fill-gear fs-5 text-secondary"></i>
+                                    </div>
+                                    <strong class="small text-uppercase">BUILDCORP AWS</strong>
+                                </div>
+                            </div>
+                            <div class="text-end">
+                                <div class="text-muted small">Monto a pagar:</div>
+                                <div class="fs-4 fw-bold text-dark">${{ monto_total }} CLP</div>
+                            </div>
+                        </div>
+
+                        <!-- Detalle del Contrato -->
+                        <div class="bg-light p-3 rounded-3 mb-4 border">
+                            <div class="small text-muted mb-1">Detalle del Arriendo:</div>
+                            <div class="fw-bold text-dark small">{{ herramienta_nombre }}</div>
+                            <div class="text-muted small">Unidades: {{ cantidad }} | Días: {{ dias_estimados }}</div>
+                            <div class="text-muted small">Tarifa diaria: ${{ precio_diario }} CLP/día</div>
+                        </div>
+
+                        <div class="mb-3 text-muted small fw-semibold">Selecciona tu medio de pago:</div>
+
+                        <div class="row g-3">
+                            <div class="col-6">
+                                <div class="option-card active" onclick="selectCard(this)">
+                                    <i class="bi bi-check-circle-fill check-icon"></i>
+                                    <i class="bi bi-credit-card fs-3 d-block mb-1 text-secondary"></i>
+                                    <span class="fw-bold">Débito</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="option-card" onclick="selectCard(this)">
+                                    <i class="bi bi-check-circle-fill check-icon"></i>
+                                    <i class="bi bi-credit-card fs-3 d-block mb-1 text-secondary"></i>
+                                    <span class="fw-bold text-muted">Crédito</span>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="option-card" onclick="selectCard(this)">
+                                    <i class="bi bi-check-circle-fill check-icon"></i>
+                                    <i class="bi bi-credit-card fs-3 d-block mb-1 text-secondary"></i>
+                                    <span class="fw-bold text-muted">Prepago</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3">
+                            <a href="{% url 'mi_carro' %}" class="text-decoration-none small text-primary d-inline-flex align-items-center gap-1">
+                                <i class="bi bi-chevron-left"></i> Anular compra y volver al comercio
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Columna Derecha: Simulación de Entrada de Tarjeta -->
+                    <div class="col-md-6 p-4 p-lg-5 side-panel d-flex flex-column justify-content-between">
+                        <div>
+                            <h6 class="fw-bold mb-4 text-secondary">Ingresa los datos de tu tarjeta:</h6>
+
+                            <div class="mb-4">
+                                <label class="form-label small text-muted">Banco</label>
+                                <select class="form-select border-0 shadow-sm" required>
+                                    <option value="banco_chile" selected>Banco de Chile / Edwards</option>
+                                    <option value="banco_estado">BancoEstado</option>
+                                    <option value="santander">Banco Santander</option>
+                                    <option value="bci">BCI</option>
+                                </select>
+                            </div>
+
+                            <div class="mb-4">
+                                <label class="form-label small text-muted">Número de tarjeta</label>
+                                <div class="input-group shadow-sm rounded">
+                                    <span class="input-group-text bg-white border-0"><i class="bi bi-credit-card text-muted"></i></span>
+                                    <input type="text" class="form-control border-0" value="4051 8842 3993 7763" readonly>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <button type="submit" class="btn btn-webpay-purple w-100 py-3 mb-3">
+                                Pagar ${{ monto_total }} CLP
+                            </button>
+
+                            <div class="d-flex justify-content-center align-items-center gap-3 pt-2">
+                                <span class="badge bg-danger px-2 py-1">Redcompra</span>
+                                <span class="badge bg-primary px-2 py-1">VISA</span>
+                                <span class="badge bg-warning text-dark px-2 py-1">Mastercard</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function selectCard(element) {
+            document.querySelectorAll('.option-card').forEach(card => card.classList.remove('active'));
+            element.classList.add('active');
+        }
+    </script>
+</body>
+</html>
