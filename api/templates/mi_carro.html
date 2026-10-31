@@ -158,7 +158,7 @@
                                     <tr>
                                         <td>
                                             <div class="fw-bold text-dark fs-6">{{ item.nombre }}</div>
-                                            <div class="small text-muted"><i class="bi bi-tag me-1"></i>Categoría: {{ item.categoria.nombre|default:item.categoria_nombre }}</div>
+                                            <div class="small text-muted"><i class="bi bi-tag me-1"></i>Categoría: {{ item.categoria.nombre|default:"Sin Categoría" }}</div>
                                         </td>
                                         <td>
                                             <code class="fw-bold text-dark">{{ item.codigo_activo }}</code>

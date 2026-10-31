@@ -457,6 +457,7 @@ def mi_carro_view(request):
     """
     Muestra los activos agregados al carro.
     Sincroniza la base de datos con la sesión y envía la variable 'es_admin' al contexto HTML.
+    Precarga la relación 'categoria' para evitar errores VariableDoesNotExist al renderizar.
     """
     es_admin = request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN'
 
@@ -465,7 +466,8 @@ def mi_carro_view(request):
     carro_ids = list(set(items_bd + carro_session))
     request.session['carro_items'] = carro_ids
 
-    items = Herramienta.objects.filter(id__in=carro_ids)
+    # Se incluye select_related('categoria') para precargar la categoría en la consulta SQL
+    items = Herramienta.objects.filter(id__in=carro_ids).select_related('categoria')
 
     return render(request, 'mi_carro.html', {
         'items': items,
@@ -522,7 +524,7 @@ def pago_web_view(request):
     carro_ids = list(set(items_bd + carro_session))
     request.session['carro_items'] = carro_ids
 
-    items = Herramienta.objects.filter(id__in=carro_ids)
+    items = Herramienta.objects.filter(id__in=carro_ids).select_related('categoria')
 
     if not items.exists():
         messages.error(request, "El carro de solicitudes está vacío.")
