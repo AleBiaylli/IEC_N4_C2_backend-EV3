@@ -1,0 +1,250 @@
+[
+{
+  "model": "api.customuser",
+  "pk": 1,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$Jh69uGWk5h64ot1Cz4PEGG$VftqSTccPv+0zAWhESHQNG5QPVRsMIvxgwgFyn7z618=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "admin_obra",
+    "first_name": "Alexander",
+    "last_name": "Lagos",
+    "email": "jefe@buildcorp.cl",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-10-29T03:59:58.182Z",
+    "role": "ADMIN",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 2,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$bdCs2ZtlPG4R6xyCas2243$oKomjimwiqsuwRLLpNZOMOCf5bxZE6K7GDqFgEEGvvU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "contratista1",
+    "first_name": "Pedro",
+    "last_name": "Valenzuela",
+    "email": "contacto@constructora-andina.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-29T03:59:58.842Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 3,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$olaxYwphmd9QZGdp24wjX1$XpzN93BBrhcxpNu/h9ZkTWUHeIQogqR9zo1uwM3X2Ws=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "contratista2",
+    "first_name": "Carlos",
+    "last_name": "Fuentes",
+    "email": "obras@ingenieria-sur.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-29T03:59:59.583Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 4,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$r9yA5V18UlTTpK3ngnn3OD$XtiTyV6pdSd3oGTBqrsdsEcw+AlC5fM8SL4r8jA7h9E=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "contratista3",
+    "first_name": "Marcelo",
+    "last_name": "Rios",
+    "email": "proyectos@vial-temuco.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-29T04:00:00.291Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 5,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$29CIpNuJT9FmLXj89JcYJk$J47FY2pZbIP/Fut6oSy/AlWgDSKJcZvSFiigNQAqEkE=",
+    "last_login": "2026-10-31T03:12:57.076Z",
+    "is_superuser": true,
+    "username": "Biaylli",
+    "first_name": "",
+    "last_name": "",
+    "email": "Alelitt@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-10-30T04:42:26.978Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 6,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$aaBYi5nmRqSAzd0ERZpeOo$w9tsyQQCYk7cIAu2Pn2Ast/h2P6bzJ0GC6C2FkckzFU=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Cristiano.OzvaldoSur",
+    "first_name": "",
+    "last_name": "",
+    "email": "contacto@constructorasur.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T04:55:35.883Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 7,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$Ch8Q6mjkGoF6OJiDxXnQdJ$Sa17YYDaqdJq2Qph5f/H94p3jZ00S/gxAQOr8af/V4E=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "JonasSanche.ingvial",
+    "first_name": "",
+    "last_name": "",
+    "email": "proyectos@ingvial.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T04:55:36.650Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 8,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$JB9QtUQhosUjki6edIxadw$ZE8NS6R9FdbdsA7BzGJOy6So8YZX1LjaitkuZrHtyMg=",
+    "last_login": null,
+    "is_superuser": false,
+    "username": "Pedro.Sanchestemu",
+    "first_name": "",
+    "last_name": "",
+    "email": "contacto@obrastemuco.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T04:55:37.444Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.customuser",
+  "pk": 9,
+  "fields": {
+    "password": "pbkdf2_sha256$1500000$hBt8RO7sYZ9cGsGvlWKIWy$TKrsj7VSCzLBjUCqHoOYZufrwISgKGpUJg7fUGTHdFM=",
+    "last_login": "2026-10-30T23:07:05.745Z",
+    "is_superuser": false,
+    "username": "Alexander.Gorbeayork",
+    "first_name": "",
+    "last_name": "",
+    "email": "gerencia@constructoragorbea.cl",
+    "is_staff": false,
+    "is_active": true,
+    "date_joined": "2026-10-30T04:55:38.228Z",
+    "role": "CONTRATISTA",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 1,
+  "fields": {
+    "usuario": 2,
+    "rut": "76.123.456-7",
+    "razon_social": "Constructora Andina SpA",
+    "telefono": "+56912345678",
+    "bloqueado_por_morosidad": false
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 2,
+  "fields": {
+    "usuario": 3,
+    "rut": "77.987.654-3",
+    "razon_social": "Ingeniería del Sur Ltda",
+    "telefono": "+56987654321",
+    "bloqueado_por_morosidad": true
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 3,
+  "fields": {
+    "usuario": 4,
+    "rut": "78.456.123-K",
+    "razon_social": "Constructora Vial Temuco S.A.",
+    "telefono": "+56955544332",
+    "bloqueado_por_morosidad": false
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 4,
+  "fields": {
+    "usuario": 6,
+    "rut": "76.111.222-3",
+    "razon_social": "Constructora del Sur SpA",
+    "telefono": "+56911112222",
+    "bloqueado_por_morosidad": false
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 5,
+  "fields": {
+    "usuario": 7,
+    "rut": "77.333.444-5",
+    "razon_social": "Ingeniería Vial Araucanía Ltda.",
+    "telefono": "+56933334444",
+    "bloqueado_por_morosidad": false
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 6,
+  "fields": {
+    "usuario": 8,
+    "rut": "78.555.666-7",
+    "razon_social": "Obras y Montajes Temuco EIRL",
+    "telefono": "+56955556666",
+    "bloqueado_por_morosidad": false
+  }
+},
+{
+  "model": "api.contratista",
+  "pk": 7,
+  "fields": {
+    "usuario": 9,
+    "rut": "79.777.888-9",
+    "razon_social": "Constructora Gorbea S.A.",
+    "telefono": "+56977778888",
+    "bloqueado_por_morosidad": false
+  }
+}
+]
