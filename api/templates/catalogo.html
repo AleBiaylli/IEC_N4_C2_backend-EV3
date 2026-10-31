@@ -57,12 +57,13 @@
                     <div class="card-header bg-white border-0 pt-3 px-3 d-flex justify-content-between align-items-center">
                         <span class="badge bg-secondary font-monospace">{{ herramienta.codigo_activo }}</span>
                         
-                        {% if herramienta.estado == 'DISPONIBLE' %}
-                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Disponible</span>
-                        {% elif herramienta.estado == 'EN_USO' %}
-                            <span class="badge bg-primary"><i class="bi bi-clock-history me-1"></i>En Uso</span>
+                        <!-- EVALUACIÓN DINÁMICA DE STOCK Y MANTENIMIENTO -->
+                        {% if herramienta.estado == 'MANTENIMIENTO' %}
+                            <span class="badge bg-warning text-dark"><i class="bi bi-wrench-adjustable me-1"></i>En Mantenimiento</span>
+                        {% elif herramienta.stock_disponible > 0 %}
+                            <span class="badge bg-success"><i class="bi bi-check-circle me-1"></i>Disponible (Stock: {{ herramienta.stock_disponible }})</span>
                         {% else %}
-                            <span class="badge bg-danger"><i class="bi bi-wrench-adjustable me-1"></i>Mantenimiento</span>
+                            <span class="badge bg-danger"><i class="bi bi-x-circle me-1"></i>Sin Stock / En Uso</span>
                         {% endif %}
                     </div>
 
@@ -84,13 +85,18 @@
                     </div>
 
                     <div class="card-footer bg-white border-0 p-3 pt-0">
-                        {% if herramienta.estado == 'DISPONIBLE' %}
+                        <!-- ACCIÓN CONDICIONADA AL STOCK REAL -->
+                        {% if herramienta.estado != 'MANTENIMIENTO' and herramienta.stock_disponible > 0 %}
                             <a href="{% url 'agregar_al_carro_html' herramienta.id %}" class="btn btn-warning w-100 text-dark fw-bold">
                                 <i class="bi bi-cart-plus me-1"></i>Agregar a Solicitud
                             </a>
+                        {% elif herramienta.estado == 'MANTENIMIENTO' %}
+                            <button class="btn btn-secondary w-100 fw-bold" disabled>
+                                <i class="bi bi-wrench me-1"></i>En Mantenimiento
+                            </button>
                         {% else %}
                             <button class="btn btn-secondary w-100 fw-bold" disabled>
-                                <i class="bi bi-slash-circle me-1"></i>No Disponible
+                                <i class="bi bi-slash-circle me-1"></i>Sin Stock Disponible
                             </button>
                         {% endif %}
                     </div>

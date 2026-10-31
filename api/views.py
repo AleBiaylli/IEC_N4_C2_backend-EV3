@@ -217,7 +217,7 @@ def dashboard_principal(request):
 
 def catalogo_herramientas_web(request):
     """
-    Catálogo interactivo de herramientas accesible para visitantes y usuarios autenticados.
+    Catálogo interactivo con cálculo dinámico de stock disponible y estado de mantenimiento.
     Permite filtrar por categoría y estado de disponibilidad.
     """
     categoria_id = request.GET.get('categoria')
@@ -229,6 +229,14 @@ def catalogo_herramientas_web(request):
         herramientas = herramientas.filter(categoria_id=categoria_id)
     if estado:
         herramientas = herramientas.filter(estado=estado)
+
+    # Calcular stock en tiempo real por cada tipo de herramienta
+    for h in herramientas:
+        h.stock_disponible = Herramienta.objects.filter(
+            nombre=h.nombre, 
+            estado='DISPONIBLE'
+        ).count()
+        h.en_mantenimiento = (h.estado == 'MANTENIMIENTO')
 
     categorias = CategoriaHerramienta.objects.all()
 
