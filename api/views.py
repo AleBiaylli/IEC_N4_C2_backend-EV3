@@ -278,8 +278,8 @@ def lista_alquileres_web(request):
 def mis_alquileres_web(request):
     """
     Vista personal del Contratista. Muestra únicamente sus propias solicitudes de arriendo.
+    Redirige al Admin a la vista global de alquileres.
     """
-    # Si ingresa un admin a esta sección, lo redirigimos a su panel global
     if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
         messages.info(request, "Redirigido al panel global de alquileres de administración.")
         return redirect('alquileres_web')
@@ -384,10 +384,9 @@ def login_web_view(request):
             user = form.get_user()
             login(request, user)
 
-            # Cargar carro persistente guardado en la base de datos solo si no es Admin
-            if not (user.is_staff or getattr(user, 'role', None) == 'ADMIN'):
-                items_bd = list(CarroItem.objects.filter(usuario=user).values_list('herramienta_id', flat=True))
-                request.session['carro_items'] = items_bd
+            # Cargar carro persistente guardado en la base de datos
+            items_bd = list(CarroItem.objects.filter(usuario=user).values_list('herramienta_id', flat=True))
+            request.session['carro_items'] = items_bd
 
             if user.is_staff or getattr(user, 'role', None) == 'ADMIN':
                 messages.success(request, f"¡Sesión iniciada como Administrador ({user.username})!")
@@ -429,7 +428,7 @@ def registro_web_view(request):
 def agregar_al_carro_html(request, herramienta_id):
     """
     Registra una herramienta en el carro persistente (BD CarroItem) y en la sesión activa.
-    Restringe la acción para Administradores.
+    Permite el guardado tanto para Contratistas como para Administradores en pruebas.
     """
     if not request.user.is_authenticated:
         messages.warning(
@@ -437,11 +436,6 @@ def agregar_al_carro_html(request, herramienta_id):
             "Para solicitar herramientas y generar un contrato de obra debe iniciar sesión como Contratista."
         )
         return redirect('login_web')
-
-    # Restricción: Los administradores no realizan contrataciones ni usan carro de compras
-    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
-        messages.warning(request, "Los administradores no gestionan compras ni agregan herramientas al carro.")
-        return redirect('catalogo_web')
 
     herramienta = get_object_or_404(Herramienta, id=herramienta_id)
 
@@ -461,13 +455,10 @@ def agregar_al_carro_html(request, herramienta_id):
 @login_required(login_url='login_web')
 def mi_carro_view(request):
     """
-    Muestra los activos agregados sincronizando la base de datos con la sesión.
-    Redirige al Administrador a su dashboard.
+    Muestra los activos agregados al carro.
+    Sincroniza la base de datos con la sesión y envía la variable 'es_admin' al contexto HTML.
     """
-    # Restricción: Redirigir si el usuario es Administrador o Staff
-    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
-        messages.info(request, "Los administradores no poseen un carro de solicitudes. Redirigido al panel de monitoreo.")
-        return redirect('dashboard_admin')
+    es_admin = request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN'
 
     items_bd = list(CarroItem.objects.filter(usuario=request.user).values_list('herramienta_id', flat=True))
     carro_session = request.session.get('carro_items', [])
@@ -475,7 +466,11 @@ def mi_carro_view(request):
     request.session['carro_items'] = carro_ids
 
     items = Herramienta.objects.filter(id__in=carro_ids)
-    return render(request, 'mi_carro.html', {'items': items})
+
+    return render(request, 'mi_carro.html', {
+        'items': items,
+        'es_admin': es_admin
+    })
 
 
 @login_required(login_url='login_web')
@@ -500,12 +495,19 @@ def editar_item_carro_view(request, item_id):
 @login_required(login_url='login_web')
 def pago_web_view(request):
     """
-    Paso 2 del Checkout: Muestra el resumen del contrato, valida morosidad,
-    calcula la tarifa dinámica (precio_diario * cantidad * dias) y deriva al Portal Webpay Plus si es POST.
+    Paso 2 del Checkout: Muestra el resumen del contrato, valida morosidad
+    y calcula la tarifa dinámica (precio_diario * cantidad * dias).
+    Bloquea a los administradores para prevenir transacciones reales en Webpay.
     """
-    if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
-        messages.warning(request, "Los administradores no pueden acceder al flujo de checkout.")
-        return redirect('dashboard_admin')
+    es_admin = request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN'
+
+    # Bloqueo explícito de pasarela de pago para administradores
+    if request.method == 'POST' and es_admin:
+        messages.warning(
+            request, 
+            "Modo Administrador: No es posible generar contratos ni procesar pagos reales en Webpay desde una cuenta de administración."
+        )
+        return redirect('mi_carro')
 
     contratista = getattr(request.user, 'perfil_contratista', None)
     if contratista and contratista.bloqueado_por_morosidad:
@@ -527,19 +529,17 @@ def pago_web_view(request):
         return redirect('catalogo_web')
 
     herramienta_base = items.first()
-    # Contar stock total en vivo disponible de ese mismo tipo de equipo
     stock_disponible = Herramienta.objects.filter(
         nombre=herramienta_base.nombre, 
         estado='DISPONIBLE'
     ).count()
 
-    # Si el contratista confirma la firma (envío POST), calcular monto real y pasar a Webpay
+    # Si el usuario confirma la firma (envío POST), calcular tarifa y pasar a Webpay
     if request.method == 'POST':
         cantidad = int(request.POST.get('cantidad', 1))
         dias = int(request.POST.get('dias_estimados', 7))
         precio_diario = herramienta_base.precio_por_dia
         
-        # Cálculo de la tarifa total del contrato
         monto_total = cantidad * dias * precio_diario
 
         context_webpay = {
@@ -555,7 +555,8 @@ def pago_web_view(request):
 
     return render(request, 'pago.html', {
         'items': items,
-        'stock_disponible': stock_disponible
+        'stock_disponible': stock_disponible,
+        'es_admin': es_admin
     })
 
 
@@ -567,8 +568,8 @@ def procesar_checkout_html(request):
     Asigna atómicamente las N unidades disponibles a estado EN_USO, genera los contratos y vacía el carro.
     """
     if request.user.is_staff or getattr(request.user, 'role', None) == 'ADMIN':
-        messages.warning(request, "Los administradores no pueden procesar contrataciones.")
-        return redirect('dashboard_admin')
+        messages.warning(request, "Operación denegada: Las cuentas de administración no ejecutan contratos de arriendo.")
+        return redirect('mi_carro')
 
     if request.method == 'POST':
         items_bd = list(CarroItem.objects.filter(usuario=request.user).values_list('herramienta_id', flat=True))
