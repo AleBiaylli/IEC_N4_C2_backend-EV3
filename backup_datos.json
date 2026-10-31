@@ -1,0 +1,588 @@
+[
+{
+  "model": "api.categoriaherramienta",
+  "pk": 1,
+  "fields": {
+    "nombre": "Maquinaria Ligera",
+    "descripcion": "Equipos compactos para movimiento de tierra, compactación y hormigonado"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 2,
+  "fields": {
+    "nombre": "Corte y Demolición",
+    "descripcion": "Sierras circulares, cortadoras de pavimento, rotomartillos y demoledores"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 3,
+  "fields": {
+    "nombre": "Herramientas Eléctricas",
+    "descripcion": "Taladros, esmeriles angulares, lijadoras y pulidoras industriales"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 4,
+  "fields": {
+    "nombre": "Generación y Iluminación",
+    "descripcion": "Generadores diésel/gasolina y torres de iluminación para faena"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 5,
+  "fields": {
+    "nombre": "Elevación y Carga",
+    "descripcion": "Elevadores de pluma, tecles eléctricos y transpaletas"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 6,
+  "fields": {
+    "nombre": "Seguridad y Ventilación",
+    "descripcion": "Extractores de aire de faena, ventiladores axiales y detectores de gas"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 7,
+  "fields": {
+    "nombre": "Maquinaria de Obra Gruesa",
+    "descripcion": "Betoneras, placas compactadoras, cortadoras de pavimento y rodillos"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 9,
+  "fields": {
+    "nombre": "Herramientas Eléctricas Básicas",
+    "descripcion": "Taladros, esmeriles angulares, lijadoras y atornilladores"
+  }
+},
+{
+  "model": "api.categoriaherramienta",
+  "pk": 10,
+  "fields": {
+    "nombre": "Generación y Limpieza",
+    "descripcion": "Generadores eléctricos, compresores de aire, hidrolavadoras y torres"
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 1,
+  "fields": {
+    "codigo_activo": "HERR-001",
+    "nombre": "Rotomartillo SDS-PLUS 800W",
+    "categoria": 2,
+    "estado": "EN_USO",
+    "horas_uso_acumuladas": 18,
+    "precio_por_dia": 9500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 2,
+  "fields": {
+    "codigo_activo": "HERR-002",
+    "nombre": "Cortadora de Pavimento 13 HP",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 42,
+    "precio_por_dia": 27500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 3,
+  "fields": {
+    "codigo_activo": "HERR-003",
+    "nombre": "Martillo Demoledor Cango 1500W Hex",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 65,
+    "precio_por_dia": 21500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 4,
+  "fields": {
+    "codigo_activo": "HERR-004",
+    "nombre": "Sierra Sensitiva 14 Pulgadas",
+    "categoria": 2,
+    "estado": "MANTENIMIENTO",
+    "horas_uso_acumuladas": 120,
+    "precio_por_dia": 13200
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 5,
+  "fields": {
+    "codigo_activo": "HERR-005",
+    "nombre": "Esmeril Angular 9 Pulgadas 2200W",
+    "categoria": 9,
+    "estado": "EN_USO",
+    "horas_uso_acumuladas": 30,
+    "precio_por_dia": 6200
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 6,
+  "fields": {
+    "codigo_activo": "HERR-006",
+    "nombre": "Placa Compactadora 5.5 HP",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 85,
+    "precio_por_dia": 24000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 7,
+  "fields": {
+    "codigo_activo": "HERR-007",
+    "nombre": "Rodillo Compactador Manual 600kg",
+    "categoria": 7,
+    "estado": "EN_USO",
+    "horas_uso_acumuladas": 110,
+    "precio_por_dia": 48000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 8,
+  "fields": {
+    "codigo_activo": "HERR-008",
+    "nombre": "Vibrador de Inmersión para Hormigón",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 25,
+    "precio_por_dia": 16000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 9,
+  "fields": {
+    "codigo_activo": "HERR-009",
+    "nombre": "Concretera / Betonera 130L 1.5 HP",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 95,
+    "precio_por_dia": 19500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 10,
+  "fields": {
+    "codigo_activo": "HERR-010",
+    "nombre": "Taladro Percutor 1/2 Pulgada 750W",
+    "categoria": 9,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 15,
+    "precio_por_dia": 3500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 11,
+  "fields": {
+    "codigo_activo": "HERR-011",
+    "nombre": "Lijadora de Banda Industrial",
+    "categoria": 9,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 8,
+    "precio_por_dia": 4800
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 12,
+  "fields": {
+    "codigo_activo": "HERR-012",
+    "nombre": "Atornillador Inalámbrico 20V Max",
+    "categoria": 9,
+    "estado": "EN_USO",
+    "horas_uso_acumuladas": 40,
+    "precio_por_dia": 8500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 13,
+  "fields": {
+    "codigo_activo": "HERR-013",
+    "nombre": "Generador Monofásico 5.5 KVA Gasolina",
+    "categoria": 10,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 150,
+    "precio_por_dia": 14800
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 14,
+  "fields": {
+    "codigo_activo": "HERR-014",
+    "nombre": "Generador Trifásico 10 KVA Diésel",
+    "categoria": 10,
+    "estado": "EN_USO",
+    "horas_uso_acumuladas": 210,
+    "precio_por_dia": 26000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 15,
+  "fields": {
+    "codigo_activo": "HERR-015",
+    "nombre": "Hidrolavadora Industrial 200 Bar",
+    "categoria": 10,
+    "estado": "MANTENIMIENTO",
+    "horas_uso_acumuladas": 310,
+    "precio_por_dia": 11500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 16,
+  "fields": {
+    "codigo_activo": "HERR-016",
+    "nombre": "Tecle Eléctrico de Cadena 1 Tonelada",
+    "categoria": 5,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 50,
+    "precio_por_dia": 17500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 17,
+  "fields": {
+    "codigo_activo": "HERR-017",
+    "nombre": "Transpaleta Hidráulica 2.5 Toneladas",
+    "categoria": 5,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 75,
+    "precio_por_dia": 10500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 18,
+  "fields": {
+    "codigo_activo": "HERR-001-B",
+    "nombre": "Rotomartillo SDS-PLUS 800W",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 5,
+    "precio_por_dia": 9500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 19,
+  "fields": {
+    "codigo_activo": "HERR-001-C",
+    "nombre": "Rotomartillo SDS-PLUS 800W",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 12,
+    "precio_por_dia": 9500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 20,
+  "fields": {
+    "codigo_activo": "HERR-002-B",
+    "nombre": "Cortadora de Pavimento 13 HP",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 10,
+    "precio_por_dia": 27500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 21,
+  "fields": {
+    "codigo_activo": "HERR-003-B",
+    "nombre": "Martillo Demoledor Cango 1500W Hex",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 20,
+    "precio_por_dia": 21500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 22,
+  "fields": {
+    "codigo_activo": "HERR-004-B",
+    "nombre": "Sierra Sensitiva 14 Pulgadas",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 15,
+    "precio_por_dia": 13200
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 23,
+  "fields": {
+    "codigo_activo": "HERR-005-B",
+    "nombre": "Esmeril Angular 9 Pulgadas 2200W",
+    "categoria": 9,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 8,
+    "precio_por_dia": 6200
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 24,
+  "fields": {
+    "codigo_activo": "HERR-005-C",
+    "nombre": "Esmeril Angular 9 Pulgadas 2200W",
+    "categoria": 2,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 2,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 25,
+  "fields": {
+    "codigo_activo": "HERR-006-B",
+    "nombre": "Placa Compactadora 5.5 HP",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 14,
+    "precio_por_dia": 24000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 26,
+  "fields": {
+    "codigo_activo": "HERR-007-B",
+    "nombre": "Rodillo Compactador Manual 600kg",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 35,
+    "precio_por_dia": 48000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 27,
+  "fields": {
+    "codigo_activo": "HERR-008-B",
+    "nombre": "Vibrador de Inmersión para Hormigón",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 6,
+    "precio_por_dia": 16000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 28,
+  "fields": {
+    "codigo_activo": "HERR-009-B",
+    "nombre": "Concretera / Betonera 130L 1.5 HP",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 40,
+    "precio_por_dia": 19500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 29,
+  "fields": {
+    "codigo_activo": "HERR-018",
+    "nombre": "Alisadora de Hormigón / Helicóptero 9 HP",
+    "categoria": 7,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 15,
+    "precio_por_dia": 36000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 30,
+  "fields": {
+    "codigo_activo": "HERR-018-B",
+    "nombre": "Alisadora de Hormigón / Helicóptero 9 HP",
+    "categoria": 1,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 3,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 31,
+  "fields": {
+    "codigo_activo": "HERR-010-B",
+    "nombre": "Taladro Percutor 1/2 Pulgada 750W",
+    "categoria": 9,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 4,
+    "precio_por_dia": 3500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 32,
+  "fields": {
+    "codigo_activo": "HERR-012-B",
+    "nombre": "Atornillador Inalámbrico 20V Max",
+    "categoria": 9,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 10,
+    "precio_por_dia": 8500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 33,
+  "fields": {
+    "codigo_activo": "HERR-013-B",
+    "nombre": "Generador Monofásico 5.5 KVA Gasolina",
+    "categoria": 10,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 60,
+    "precio_por_dia": 14800
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 34,
+  "fields": {
+    "codigo_activo": "HERR-014-B",
+    "nombre": "Generador Trifásico 10 KVA Diésel",
+    "categoria": 4,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 45,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 35,
+  "fields": {
+    "codigo_activo": "HERR-015-B",
+    "nombre": "Hidrolavadora Industrial 200 Bar",
+    "categoria": 10,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 90,
+    "precio_por_dia": 11500
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 36,
+  "fields": {
+    "codigo_activo": "HERR-016-B",
+    "nombre": "Tecle Eléctrico de Cadena 1 Tonelada",
+    "categoria": 5,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 22,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 37,
+  "fields": {
+    "codigo_activo": "HERR-017-B",
+    "nombre": "Transpaleta Hidráulica 2.5 Toneladas",
+    "categoria": 5,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 30,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 38,
+  "fields": {
+    "codigo_activo": "HERR-019",
+    "nombre": "Extractor de Aire Portátil 12 Pulgadas",
+    "categoria": 6,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 12,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 39,
+  "fields": {
+    "codigo_activo": "HERR-019-B",
+    "nombre": "Extractor de Aire Portátil 12 Pulgadas",
+    "categoria": 6,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 8,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 40,
+  "fields": {
+    "codigo_activo": "HERR-020",
+    "nombre": "Detector Mutigas Industrial 4 Gases",
+    "categoria": 6,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 5,
+    "precio_por_dia": 15000
+  }
+},
+{
+  "model": "api.herramienta",
+  "pk": 41,
+  "fields": {
+    "codigo_activo": "HERR-021",
+    "nombre": "Compresor de Aire 50 Litros 2 HP",
+    "categoria": 10,
+    "estado": "DISPONIBLE",
+    "horas_uso_acumuladas": 15,
+    "precio_por_dia": 7500
+  }
+},
+{
+  "model": "api.mantenimiento",
+  "pk": 1,
+  "fields": {
+    "herramienta": 4,
+    "fecha_ingreso": "2026-10-30T05:08:30.322Z",
+    "tipo": "CORRECTIVO",
+    "detalle": "Cambio de disco de corte e inspección de carbones de motor.",
+    "proximo_mantenimiento": "2026-11-13"
+  }
+},
+{
+  "model": "api.mantenimiento",
+  "pk": 2,
+  "fields": {
+    "herramienta": 15,
+    "fecha_ingreso": "2026-10-30T05:08:30.322Z",
+    "tipo": "PREVENTIVO",
+    "detalle": "Revisión general de cableado eléctrico y sustitución de foco LED dañado.",
+    "proximo_mantenimiento": "2026-11-28"
+  }
+}
+]
